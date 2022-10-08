@@ -15,6 +15,7 @@ namespace mainCalcApp
         Double resultValue = 0;
         String operationPerformed = "";
         bool isOperationPerformed = false;
+
         public frmCalc()
         {
             InitializeComponent();
@@ -22,21 +23,15 @@ namespace mainCalcApp
 
         private void btnNum_Click(object sender, EventArgs e)
         {
-            if ((textBox_Result.Text == "0") || (isOperationPerformed))
-                textBox_Result.Clear();
+            if ((textBox_Result.Text == "0") || (isOperationPerformed)) textBox_Result.Clear();
 
             isOperationPerformed = false;
             Button button = (Button)sender;
-            if (button.Text == ".")
+            if (button.Text == ",")
             {
-                if (!textBox_Result.Text.Contains("."))
-                    textBox_Result.Text = textBox_Result.Text + button.Text;
-
+                if (!textBox_Result.Text.Contains(",")) textBox_Result.Text = textBox_Result.Text + button.Text;
             }
-            else
-                textBox_Result.Text = textBox_Result.Text + button.Text;
-
-
+            else textBox_Result.Text = textBox_Result.Text + button.Text;
         }
 
         private void operator_Click(object sender, EventArgs e)
@@ -60,6 +55,13 @@ namespace mainCalcApp
             }
         }
 
+        private void btnBS_Click(object sender, EventArgs e)
+        {
+            if (textBox_Result.Text.Length > 0) textBox_Result.Text = textBox_Result.Text.Remove(textBox_Result.Text.Length - 1, 1);
+
+            if (textBox_Result.Text == "") textBox_Result.Text = "0";
+        }
+
         private void btnC_Click(object sender, EventArgs e)
         {
             textBox_Result.Text = "0";
@@ -69,37 +71,39 @@ namespace mainCalcApp
         {
             textBox_Result.Text = "0";
             resultValue = 0;
+            labelCurrentOperation.Text = "";
         }
 
         private void btnEqual_Click(object sender, EventArgs e)
         {
-            try { 
-            switch (operationPerformed)
+            try
             {
-                case "+":
-                    textBox_Result.Text = (resultValue + Double.Parse(textBox_Result.Text)).ToString();
-                    break;
-                case "-":
-                    textBox_Result.Text = (resultValue - Double.Parse(textBox_Result.Text)).ToString();
-                    break;
-                case "*":
-                    textBox_Result.Text = (resultValue * Double.Parse(textBox_Result.Text)).ToString();
-                    break;
-                case "/":
-                    if (Double.Parse(textBox_Result.Text) == 0)
-                    {
-                        MessageBox.Show("Divison by zero!", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
-                        textBox_Result.Text = "0";
-                        labelCurrentOperation.Text = "";
+                switch (operationPerformed)
+                {
+                    case "+":
+                        textBox_Result.Text = (resultValue + Double.Parse(textBox_Result.Text)).ToString();
                         break;
-                    }
-                    textBox_Result.Text = (resultValue / Double.Parse(textBox_Result.Text)).ToString();
-                    break;
-                default:
-                    break;
-            }
-            resultValue = Double.Parse(textBox_Result.Text);
-            labelCurrentOperation.Text = "";
+                    case "-":
+                        textBox_Result.Text = (resultValue - Double.Parse(textBox_Result.Text)).ToString();
+                        break;
+                    case "*":
+                        textBox_Result.Text = (resultValue * Double.Parse(textBox_Result.Text)).ToString();
+                        break;
+                    case "/":
+                        if (Double.Parse(textBox_Result.Text) == 0)
+                        {
+                            MessageBox.Show("Divison by zero!", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
+                            textBox_Result.Text = "0";
+                            labelCurrentOperation.Text = "";
+                            break;
+                        }
+                        textBox_Result.Text = (resultValue / Double.Parse(textBox_Result.Text)).ToString();
+                        break;
+                    default:
+                        break;
+                }
+                resultValue = Double.Parse(textBox_Result.Text);
+                labelCurrentOperation.Text = "";
             }
 
             catch
@@ -119,5 +123,6 @@ namespace mainCalcApp
 
         }
         #endregion
+
     }
 }
